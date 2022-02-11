@@ -7,9 +7,9 @@ class ListOfGoods:
 
     @staticmethod
     def check_goods(value):
-        """Проверка аргумента: должен быть экземляром Класса Goods"""
+        """Проверка аргумента: должен быть объектом Класса Goods"""
         if not isinstance(value, Goods):
-            raise ValueError(f'{value} не является экземляром Класса Goods')
+            raise ValueError(f'{value} не является объектом Класса Goods')
 
     @staticmethod
     def check_name(value):
@@ -36,6 +36,7 @@ class ListOfGoods:
         for goods in args:
             self.check_goods(goods)
             self.list_of_goods.append(goods)
+            
         return self
 
     def find_goods(self, value):
