@@ -5,23 +5,17 @@ class ListOfGoods:
 
     """Класс ListOfGoods, формирующий список товаров"""
 
-    @staticmethod
-    def check_goods(value):
-        """Проверка аргумента: должен быть объектом Класса Goods"""
-        if not isinstance(value, Goods):
-            raise ValueError(f'{value} не является объектом Класса Goods')
-
-    @staticmethod
-    def check_name(value):
-        """Проверка Наименования товара"""
-        if not isinstance(value, str) or len(value) == 0:
-            raise ValueError('Наименование должно быть непустой строкой')
-
     def __init__(self):
-        self.list_of_goods = []
+        self.__list_of_goods = []
 
     def __str__(self):
-        return "\n".join(map(str, self.list_of_goods))
+        return "\n".join(map(str, self.__list_of_goods))
+
+    @staticmethod
+    def __check_goods(value):
+        """Проверка аргумента: должен быть объектом Класса Goods"""
+        if not isinstance(value, Goods):
+            raise ValueError(f'"{value}" не является объектом Класса Goods')
 
     def add_goods(self, *args):
         """
@@ -34,8 +28,8 @@ class ListOfGoods:
         :rtype: object of Class ListOfGoods
         """
         for goods in args:
-            self.check_goods(goods)
-            self.list_of_goods.append(goods)
+            self.__check_goods(goods)
+            self.__list_of_goods.append(goods)
             
         return self
 
@@ -49,20 +43,20 @@ class ListOfGoods:
         :return: список найденных товаров
         :rtype: object of Class ListOfGoods
         """
-        self.check_name(value)
+        Goods.check_name(value)
 
         count = 0
-        list_of_find_goods = ListOfGoods()
+        find_goods_list = ListOfGoods()
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if value.lower() in goods.name_goods.lower():
-                list_of_find_goods.add_goods(goods)
+                find_goods_list.add_goods(goods)
                 count += 1
 
         if count == 0:
             raise ValueError('Товара нет в списке товаров')
 
-        return f'Найдено {count} товаров\n{list_of_find_goods}'
+        return f'Найдено {count} товаров\n{find_goods_list}'
 
     def delete_goods(self, value):
         """
@@ -74,11 +68,11 @@ class ListOfGoods:
         :return: удаленный товар
         :rtype: object of Class Goods
         """
-        self.check_name(value)
+        Goods.check_name(value)
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if value.lower() == goods.name_goods.lower():
-                self.list_of_goods.remove(goods)
+                self.__list_of_goods.remove(goods)
                 break
         else:
             raise ValueError('Товара нет в списке товаров')
@@ -93,14 +87,14 @@ class ListOfGoods:
         :return: список товаров с максимальной ценой
         :rtype: object of Class ListOfGoods
         """
-        list_of_max_price = ListOfGoods()
-        max_price = max([goods.price_goods for goods in self.list_of_goods])
+        max_price_list = ListOfGoods()
+        max_price = max([goods.price_goods for goods in self.__list_of_goods])
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if goods.price_goods == max_price:
-                list_of_max_price.add_goods(goods)
+                max_price_list.add_goods(goods)
 
-        return list_of_max_price
+        return max_price_list
 
     @property
     def min_price(self):
@@ -110,14 +104,14 @@ class ListOfGoods:
         :return: список товаров с минимальной ценой
         :rtype: object of Class ListOfGoods
         """
-        list_of_min_price = ListOfGoods()
-        min_price = min([goods.price_goods for goods in self.list_of_goods])
+        min_price_list = ListOfGoods()
+        min_price = min([goods.price_goods for goods in self.__list_of_goods])
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if goods.price_goods == min_price:
-                list_of_min_price.add_goods(goods)
+                min_price_list.add_goods(goods)
 
-        return list_of_min_price
+        return min_price_list
 
     def update_goods(self, value, new_name=None,
                      new_price=None, new_count=None):
@@ -139,9 +133,9 @@ class ListOfGoods:
         :return: товар с измененными данными
         :rtype: object of Class Goods
         """
-        self.check_name(value)
+        Goods.check_name(value)
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if value.lower() == goods.name_goods.lower():
                 if new_name is not None:
                     goods.name_goods = new_name
@@ -168,11 +162,11 @@ class ListOfGoods:
         :return: товар с измененными данными
         :rtype: object of Class Goods
         """
-        self.check_name(value)
+        Goods.check_name(value)
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if value.lower() == goods.name_goods.lower():
-                goods.supply(count)
+                goods.supply_goods(count)
                 break
         else:
             raise ValueError('Товара нет в списке товаров')
@@ -192,11 +186,11 @@ class ListOfGoods:
         :return: товар с измененными данными
         :rtype: object of Class Goods
         """
-        self.check_name(value)
+        Goods.check_name(value)
 
-        for goods in self.list_of_goods:
+        for goods in self.__list_of_goods:
             if value.lower() == goods.name_goods.lower():
-                goods.sold(count)
+                goods.sold_goods(count)
                 break
         else:
             raise ValueError('Товара нет в списке товаров')
@@ -223,6 +217,6 @@ class ListOfGoods:
             raise KeyError('Сортировка возможна по: '
                            'Наименованию(name)/Цене(price)/Количеству(count)')
 
-        self.list_of_goods = sorted(self.list_of_goods,
-                                    key=key_functions[sort_key])
+        self.__list_of_goods = sorted(self.__list_of_goods,
+                                      key=key_functions[sort_key])
         return self
