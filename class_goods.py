@@ -3,29 +3,10 @@ class Goods:
     """Класс Goods, описывающий товар,
     принимает параметры: Наименование, Цена, Количество"""
 
-    @staticmethod
-    def check_name(value):
-        """Проверка Наименования товара"""
-        if not isinstance(value, str) or len(value) == 0:
-            raise ValueError('Наименование должно быть непустой строкой')
-
-    @staticmethod
-    def check_price(value):
-        """Проверка Цены товара"""
-        if not isinstance(value, (int, float)) or value < 0:
-            raise ValueError('Цена должна быть неотрицательным числом')
-
-    @staticmethod
-    def check_count(value):
-        """Проверка Количества товара"""
-        if not isinstance(value, int) or value < 0:
-            raise ValueError('Количество должно быть неотрицательным '
-                             'целым числом')
-
     def __init__(self, name, price=0, count=0):
         self.check_name(name)
-        self.check_price(price)
-        self.check_count(count)
+        self.__check_price(price)
+        self.__check_count(count)
 
         self.__name = name
         self.__price = price
@@ -35,6 +16,25 @@ class Goods:
         return f'Наименование: {self.__name}, ' \
                f'Цена: {self.__price}, Количество: ' \
                f'{self.__count}'
+
+    @staticmethod
+    def check_name(value):
+        """Проверка Наименования товара"""
+        if not isinstance(value, str) or len(value) == 0:
+            raise ValueError('Наименование должно быть непустой строкой')
+
+    @staticmethod
+    def __check_price(value):
+        """Проверка Цены товара"""
+        if not isinstance(value, (int, float)) or value < 0:
+            raise ValueError('Цена должна быть неотрицательным числом')
+
+    @staticmethod
+    def __check_count(value):
+        """Проверка Количества товара"""
+        if not isinstance(value, int) or value < 0:
+            raise ValueError('Количество должно быть неотрицательным '
+                             'целым числом')
 
     @property
     def name_goods(self):
@@ -51,7 +51,7 @@ class Goods:
 
     @price_goods.setter
     def price_goods(self, value):
-        self.check_price(value)
+        self.__check_price(value)
         self.__price = value
 
     @property
@@ -60,10 +60,10 @@ class Goods:
 
     @count_goods.setter
     def count_goods(self, value):
-        self.check_count(value)
+        self.__check_count(value)
         self.__count = value
 
-    def supply(self, value):
+    def supply_goods(self, value):
         """
         Увеличение количества товара с учетом поставки
 
@@ -73,11 +73,11 @@ class Goods:
         :return: товар с измененными данными
         :rtype: object of Class Goods
         """
-        self.check_count(value)
+        self.__check_count(value)
         self.count_goods += value
         return self
 
-    def sold(self, value):
+    def sold_goods(self, value):
         """
         Уменьшение количества товара с учетом продажи
 
@@ -87,7 +87,7 @@ class Goods:
         :return: товар с измененными данными
         :rtype: object of Class Goods
         """
-        self.check_count(value)
+        self.__check_count(value)
 
         if self.count_goods < value:
             raise ValueError(f'Недостаточно {value - self.count_goods} '
