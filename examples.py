@@ -33,10 +33,10 @@ print('\nПосмотрим на объект класса Goods еще раз:'
 print(a)
 
 print('\nОтразим поставку товара в количестве 15 шт:')
-print(a.supply(15))
+print(a.supply_goods(15))
 
 print('\nОтразим продажу товара в количестве 30 шт:')
-print(a.sold(30))
+print(a.sold_goods(30))
 
 
 """Пример работы с объектом класса ListOfGoods"""
