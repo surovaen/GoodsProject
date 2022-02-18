@@ -19,75 +19,51 @@ class CheckParameter:
     @staticmethod
     def check_name(value):
         """Проверка Наименования товара"""
-        if value == '':
-            messagebox.showwarning('Ошибка', 'Введите наименование товара')
+        if not value.strip():
+            messagebox.showwarning('Наименование', 'Введите наименование')
             log.error('Наименование: Пустая строка')
             CheckParameter.check_status = False
 
     @staticmethod
     def check_price(value):
         """Проверка Цены товара"""
-        if value == '':
-            messagebox.showwarning('Ошибка', 'Введите цену товара')
-            log.error('Цена: Пустая строка')
+        try:
+            int(value)
+        except ValueError:
+            messagebox.showwarning('Цена', 'Введите число')
+            log.error('Цена: Введено не число/пустая строка')
             CheckParameter.check_status = False
-        else:
-            try:
-                int(value)
-            except ValueError:
-                messagebox.showwarning('Ошибка', 'Цена должна быть числом')
-                log.error('Цена: Введено не число')
-                CheckParameter.check_status = False
 
     @staticmethod
     def check_count(value):
         """Проверка Количества товара"""
-        if value == '':
-            messagebox.showwarning('Ошибка', 'Введите количество товара')
-            log.error('Количество: Пустая строка')
+        try:
+            int(value)
+        except ValueError:
+            messagebox.showwarning('Количество', 'Введите число')
+            log.error('Количество: Введено не число/пустая строка')
             CheckParameter.check_status = False
-        else:
-            try:
-                int(value)
-            except ValueError:
-                messagebox.showwarning('Ошибка',
-                                       'Количество должно быть числом')
-                log.error('Количество: Введено не число')
-                CheckParameter.check_status = False
 
     @staticmethod
     def check_file(value):
         """Проверка имени файла"""
-        if value == '':
-            messagebox.showwarning('Ошибка', 'Введите имя файла')
+        if not value.strip():
+            messagebox.showwarning('Файл', 'Введите имя файла')
             log.error('Файл: Пустая строка')
             CheckParameter.check_status = False
 
     @staticmethod
     def check_update(value1, value2):
         """Проверка Цены/Количества изменяемого товара"""
-        if value1 == '' and value2 == '':
+        if not (value1 or value2):
             messagebox.showwarning('Ошибка',
-                                   'Введите цену и/или количество товара')
+                                   'Введите цену и/или количество')
             log.error('Цена/Количество: Пустая строка')
             CheckParameter.check_status = False
-
-        if value1 != '':
-            try:
-                int(value1)
-            except ValueError:
-                messagebox.showwarning('Ошибка', 'Цена должнa быть числом')
-                log.error('Цена: введено не число')
-                CheckParameter.check_status = False
-
-        if value2 != '':
-            try:
-                int(value2)
-            except ValueError:
-                messagebox.showwarning('Ошибка',
-                                       'Количество должно быть числом')
-                log.error('Количество: введено не число')
-                CheckParameter.check_status = False
+        if value1:
+            CheckParameter.check_price(value1)
+        if value2:
+            CheckParameter.check_count(value2)
 
 
 # создание объекта Класса Interface
