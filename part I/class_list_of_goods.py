@@ -11,6 +11,14 @@ class ListOfGoods:
     def __str__(self):
         return "\n".join(map(str, self.__list_of_goods))
 
+    def __bool__(self):
+        if len(self.__list_of_goods) == 0:
+            return False
+        return True
+
+    def __len__(self):
+        return len(self.__list_of_goods)
+
     @staticmethod
     def __check_goods(value):
         """Проверка аргумента: должен быть объектом Класса Goods"""
@@ -27,9 +35,13 @@ class ListOfGoods:
         :return: список товаров
         :rtype: object of Class ListOfGoods
         """
-        for goods in args:
-            self.__check_goods(goods)
-            self.__list_of_goods.append(goods)
+        for arg in args:
+            self.__check_goods(arg)
+            for goods in self.__list_of_goods:
+                if arg.name_goods.lower() == goods.name_goods.lower():
+                    raise ValueError(f'Товар "{arg.name_goods}" уже '
+                                     f'есть в списке товаров')
+            self.__list_of_goods.append(arg)
             
         return self
 
@@ -44,19 +56,16 @@ class ListOfGoods:
         :rtype: object of Class ListOfGoods
         """
         Goods.check_name(value)
-
-        count = 0
         find_goods_list = ListOfGoods()
 
         for goods in self.__list_of_goods:
             if value.lower() in goods.name_goods.lower():
                 find_goods_list.add_goods(goods)
-                count += 1
 
-        if count == 0:
+        if not find_goods_list:
             raise ValueError('Товара нет в списке товаров')
 
-        return f'Найдено {count} товаров\n{find_goods_list}'
+        return f'Найдено {len(find_goods_list)} товаров\n{find_goods_list}'
 
     def delete_goods(self, value):
         """
@@ -94,7 +103,8 @@ class ListOfGoods:
             if goods.price_goods == max_price:
                 max_price_list.add_goods(goods)
 
-        return max_price_list
+        return f'Найдено {len(max_price_list)} товаров с макс. ценой\n' \
+               f'{max_price_list}'
 
     @property
     def min_price(self):
@@ -111,7 +121,8 @@ class ListOfGoods:
             if goods.price_goods == min_price:
                 min_price_list.add_goods(goods)
 
-        return min_price_list
+        return f'Найдено {len(min_price_list)} товаров с мин. ценой\n' \
+               f'{min_price_list}'
 
     def update_goods(self, value, new_name=None,
                      new_price=None, new_count=None):
@@ -137,11 +148,11 @@ class ListOfGoods:
 
         for goods in self.__list_of_goods:
             if value.lower() == goods.name_goods.lower():
-                if new_name is not None:
+                if new_name:
                     goods.name_goods = new_name
-                if new_price is not None:
+                if new_price:
                     goods.price_goods = new_price
-                if new_count is not None:
+                if new_count:
                     goods.count_goods = new_count
                 break
         else:
