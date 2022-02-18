@@ -185,9 +185,9 @@ class GoodsMethods:
         update_goods = session.query(Goods).filter(
                 Goods.name == name_goods).first()
 
-        if new_price != '':
+        if new_price:
             update_goods.price = int(new_price)
-        if new_count != '':
+        if new_count:
             update_goods.count = int(new_count)
 
         session.commit()
